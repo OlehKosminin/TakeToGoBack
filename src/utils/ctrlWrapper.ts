@@ -5,7 +5,7 @@ interface ICtrlWrapper {
 }
 
 const ctrlWrapper = ({ ctrl }: ICtrlWrapper) => {
-  const func = async (req: Request, res: Response, next?: NextFunction) => {
+  const func = async (req: Request, res: Response, next: NextFunction) => {
     try {
       await ctrl(req, res, next);
     } catch (error) {

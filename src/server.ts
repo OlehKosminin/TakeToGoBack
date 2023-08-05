@@ -1,11 +1,10 @@
-const sqlite3 = require("sqlite3").verbose();
-require("dotenv").config();
 import app from "./app";
 
-const port = 3000;
+import dotenv from "dotenv";
 
-const dbPath = "./databases/database.db";
-const db = new sqlite3.Database(dbPath);
+dotenv.config();
+
+const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
