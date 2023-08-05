@@ -1,19 +1,21 @@
-const mongoose = require("mongoose");
+const sqlite3 = require("sqlite3").verbose();
 require("dotenv").config();
 const app = require("./app");
 
-const { DB_HOST, PORT = 3000 } = process.env;
+const { PORT = 3000 } = process.env;
 
-mongoose
-  .connect(DB_HOST)
-  .then(() => {
-    app.listen(
-      PORT,
-      console.log(`Server running. Use our API on port: ${PORT}`),
-      console.log("Database connection successful")
-    );
-  })
-  .catch((error) => {
-    console.log(error.message);
-    process.exit(1);
-  });
+const db = new sqlite3.Database("mydatabase.db", (err) => {
+  if (err) {
+    console.error("Error on connnect:", err.message);
+  } else {
+    console.log("Connect success SQLite");
+  }
+});
+
+app.get("/", (req, res) => {
+  res.send("Hello Express with SQLite");
+});
+
+app.listen(PORT, () => {
+  console.log(`Server start on port ${PORT}`);
+});
