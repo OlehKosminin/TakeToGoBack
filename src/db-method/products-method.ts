@@ -82,6 +82,7 @@ export const addItem = async (
       ingredients,
     };
 
+    console.log("ds");
     return {
       message: "Product added successfully.",
       product,
