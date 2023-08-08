@@ -1,0 +1,29 @@
+
+create table
+
+CREATE TABLE IF NOT EXISTS products (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    title VARCHAR(50) NOT NULL,
+    description TEXT NOT NULL,
+    price VARCHAR(8) NOT NULL,
+    currency VARCHAR(3) NOT NULL,
+    category VARCHAR(15) NOT NULL,
+    bought INTEGER DEFAULT 0,
+    photoUrl CHAR(87),
+    publicId CHAR(73),
+    alt CHAR(10),
+    discount VARCHAR(5),
+    weight VARCHAR(5) NOT NULL,
+    ingredients TEXT NOT NULL
+);
+
+example products
+
+INSERT INTO products (title, descriprion, price, currency, category, bought, photoUrl, publicId, alt, discount, weight, ingredients)
+VALUES 
+    ('Product 1', 'Description for Product 1', '10.99', 'USD', 'Category A', 0, 'http://example.com/product1.jpg', 'public123', 'Product 1 Image', '5%', '250g', 'Ingredient 1, Ingredient 2'),
+    ('Product 2', 'Description for Product 2', '25.50', 'USD', 'Category B', 0, 'http://example.com/product2.jpg', 'public456', 'Product 2 Image', '15%', '500g', 'Ingredient 3, Ingredient 4'),
+    ('Product 3', 'Description for Product 3', '5.00', 'USD', 'Category A', 3, 'http://example.com/product3.jpg', 'public789', 'Product 3 Image', '10%', '150g', 'Ingredient 5, Ingredient 6'),
+    ('Product 4', 'Description for Product 4', '15.75', 'USD', 'Category C', 43, 'http://example.com/product4.jpg', 'public234', 'Product 4 Image', '8%', '300g', 'Ingredient 7, Ingredient 8'),
+    ('Product 5', 'Description for Product 5', '8.49', 'USD', 'Category B', 21, 'http://example.com/product5.jpg', 'public567', 'Product 5 Image', '20%', '200g', 'Ingredient 9, Ingredient 10');
+
