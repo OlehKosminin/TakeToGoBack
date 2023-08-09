@@ -6,12 +6,14 @@ const errorMessages: { [key: number]: string } = {
   409: "Conflict",
 };
 
-const HttpError = (
-  status: number,
-  message: string = errorMessages[status]
-): Error => {
+const HttpError = (status: number, customMessage?: string): Error => {
+  const defaultMessage = errorMessages[status] || "Server Error";
+  const message = customMessage || defaultMessage;
+
   const error = new Error(message);
   (error as any).status = status;
+
+  console.log("error: ", error);
   return error;
 };
 
