@@ -57,12 +57,10 @@ export const addItem = async (
     currency,
     category,
     bought,
-    photoUrl,
-    publicId,
-    alt,
     discount,
     weight,
     ingredients,
+    photo,
   } = reqBody;
 
   try {
@@ -76,12 +74,10 @@ export const addItem = async (
           currency,
           category,
           bought,
-          photoUrl,
-          publicId,
-          alt,
           discount,
           weight,
           ingredients,
+          photo,
         ],
         (err) => {
           if (err) {
@@ -101,12 +97,10 @@ export const addItem = async (
       currency,
       category,
       bought,
-      photoUrl,
-      publicId,
-      alt,
       discount,
       weight,
       ingredients,
+      photo,
     };
 
     return {

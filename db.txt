@@ -17,6 +17,25 @@ CREATE TABLE IF NOT EXISTS products (
     ingredients TEXT NOT NULL
 );
 
+??
+
+CREATE TABLE IF NOT EXISTS productsUpd (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    title VARCHAR(50) NOT NULL,
+    description TEXT NOT NULL,
+    price VARCHAR(8) NOT NULL,
+    currency VARCHAR(3) NOT NULL,
+    category VARCHAR(15) NOT NULL,
+    bought INTEGER DEFAULT 0,
+    discount VARCHAR(5),
+    weight VARCHAR(5) NOT NULL,
+    ingredients TEXT NOT NULL
+    photo INTEGER, 
+  FOREIGN KEY (photo) REFERENCES picture (id)
+);
+
+??
+
 example products
 
 INSERT INTO products (title, descriprion, price, currency, category, bought, photoUrl, publicId, alt, discount, weight, ingredients)
@@ -27,3 +46,38 @@ VALUES
     ('Product 4', 'Description for Product 4', '15.75', 'USD', 'Category C', 43, 'http://example.com/product4.jpg', 'public234', 'Product 4 Image', '8%', '300g', 'Ingredient 7, Ingredient 8'),
     ('Product 5', 'Description for Product 5', '8.49', 'USD', 'Category B', 21, 'http://example.com/product5.jpg', 'public567', 'Product 5 Image', '20%', '200g', 'Ingredient 9, Ingredient 10');
 
+
+create user
+
+CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    password CHAR(60) NOT NULL,
+    email VARCHAR(22) NOT NULL,
+    birthday VARCHAR(10) NOT NULL,
+    phone CHAR(12) NOT NULL,
+    photo VARCHAR(4),
+    name VARCHAR(10) NOT NULL,
+    restoran VARCHAR(10),
+    token CHAR(60) NOT NULL,
+    role TEXT CHECK (role IN ('ADMIN', 'USER')) NOT NULL
+);
+  
+
+  create picture table 
+
+  CREATE TABLE picture (
+  id INTEGER PRIMARY KEY,
+  photoUrl TEXT NOT NULL,
+  publicId TEXT NOT NULL,
+  name TEXT NOT NULL
+);
+
+many to many 
+
+CREATE TABLE product_picture (
+  product_id INTEGER,
+  picture_id INTEGER,
+  PRIMARY KEY (product_id, picture_id),
+  FOREIGN KEY (product_id) REFERENCES products (id),
+  FOREIGN KEY (picture_id) REFERENCES picture (id)
+);

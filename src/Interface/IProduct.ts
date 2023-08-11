@@ -6,10 +6,8 @@ export default interface IProduct {
   currency: string;
   category: string;
   bought: number;
-  photoUrl: string;
-  publicId: string;
-  alt: string;
   discount: string;
   weight: string;
   ingredients: string;
+  photo: string;
 }

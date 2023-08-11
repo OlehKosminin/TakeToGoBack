@@ -1,12 +1,14 @@
 import express from "express";
 
+const router = express.Router();
+
 import ctrl from "../controllers/products-controller";
 
-const router = express.Router();
+import uploadPhoto from "../services/imageService";
 
 router.get("/", ctrl.getAllProducts);
 
-router.post("/", ctrl.createProduct);
+router.post("/", uploadPhoto.single("image"), ctrl.createProduct);
 
 router.get("/:id", ctrl.getProductById);
 

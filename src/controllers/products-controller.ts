@@ -1,8 +1,8 @@
-import { Router, Request, Response, query } from "express";
+import { Request, Response } from "express";
 
 import ctrlWrapper from "../utils/ctrlWrapper";
 import HttpError from "../helpers/HttpError";
-import db from "../db";
+
 import {
   getAll,
   addItem,
@@ -21,13 +21,22 @@ const getAllProductsCtrl = async (req: Request, res: Response) => {
 };
 
 const createProductCtrl = async (req: Request, res: Response) => {
+  console.log("req: ", req.body);
+  const { file } = req;
+  console.log("file: ", file);
+
+  if (!file) throw HttpError(404, "The image was not uploaded");
+
   const query = `
       INSERT INTO products
-      (title, description, price, currency, category, bought, photoUrl, publicId, alt, discount, weight, ingredients)
+      (title, description, price, currency, category, bought,photo, discount, weight, ingredients)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
     `;
 
-  const result = await addItem(req, res, query, req.body);
+  const result = await addItem(req, res, query, {
+    ...req.body,
+    photo: imageUrl,
+  });
 
   res.json(result);
 };
