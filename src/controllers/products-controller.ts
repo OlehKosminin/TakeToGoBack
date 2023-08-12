@@ -10,6 +10,7 @@ import {
   upd,
   deleteById,
   checkIfIdExists,
+  addPhotoDB,
 } from "../db-method/products-method";
 
 const getAllProductsCtrl = async (req: Request, res: Response) => {
@@ -21,24 +22,44 @@ const getAllProductsCtrl = async (req: Request, res: Response) => {
 };
 
 const createProductCtrl = async (req: Request, res: Response) => {
-  console.log("req: ", req.body);
   const { file } = req;
-  console.log("file: ", file);
-
-  if (!file) throw HttpError(404, "The image was not uploaded");
+  if (!file) {
+    return res.status(400).json({ message: "Must be field image" });
+  }
 
   const query = `
       INSERT INTO products
-      (title, description, price, currency, category, bought,photo, discount, weight, ingredients)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+      (title, description, price, currency, category, bought, discount, weight, ingredients, photo)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
     `;
 
-  const result = await addItem(req, res, query, {
-    ...req.body,
-    photo: imageUrl,
-  });
+  const queryForUpd = `
+    UPDATE products
+    SET photo = ?
+    WHERE id = ?;
+  `;
 
-  res.json(result);
+  const product = await addItem(req, res, query, file.path);
+  // console.log("product: ", product?.productInfo.id);
+  const productId = product?.productInfo.id.toString();
+  console.log("productId: ", productId);
+
+  const photo = await addPhotoDB(file.path, file.filename, file.fieldname);
+  const photoId = photo.id;
+  const photoIdConverted = photoId !== null ? photoId.toString() : "";
+
+  if (productId !== undefined && photoId !== undefined) {
+    const resultUpd = await upd(
+      req,
+      res,
+      queryForUpd,
+      productId,
+      photoIdConverted
+    );
+    console.log("resultUpd: ", resultUpd);
+  }
+
+  res.status(200).json({ ...product?.productInfo, photo: photoIdConverted });
 };
 
 const getProductByIdCtrl = async (req: Request, res: Response) => {
@@ -75,6 +96,7 @@ const updProductCtrl = async (req: Request, res: Response) => {
     "discount",
     "weight",
     "ingredients",
+    "photo",
   ];
 
   if (!validFields.includes(fieldToUpdate)) {

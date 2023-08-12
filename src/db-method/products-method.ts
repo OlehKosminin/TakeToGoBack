@@ -48,7 +48,7 @@ export const addItem = async (
   req: Request,
   res: Response,
   query: string,
-  reqBody: IProduct
+  photo: string
 ) => {
   const {
     title,
@@ -60,11 +60,10 @@ export const addItem = async (
     discount,
     weight,
     ingredients,
-    photo,
-  } = reqBody;
+  } = req.body;
 
   try {
-    await new Promise<void>((resolve, reject) => {
+    const insertedProductId = await new Promise<number>((resolve, reject) => {
       db.run(
         query,
         [
@@ -79,18 +78,19 @@ export const addItem = async (
           ingredients,
           photo,
         ],
-        (err) => {
+        function (err) {
           if (err) {
             console.error(err);
             reject(err);
           } else {
-            resolve();
+            resolve(this.lastID);
           }
         }
       );
     });
 
-    const product = {
+    const productInfo = {
+      id: insertedProductId,
       title,
       description,
       price,
@@ -105,7 +105,7 @@ export const addItem = async (
 
     return {
       message: "Product added successfully.",
-      product,
+      productInfo,
     };
   } catch (error) {
     console.error(error);
@@ -153,4 +153,36 @@ export const checkIfIdExists = async (id: string): Promise<boolean> => {
       }
     });
   });
+};
+
+export const addPhotoDB = async (
+  photoUrl: string,
+  publicId: string,
+  photoName: string
+): Promise<{ message: string; id: number | null }> => {
+  try {
+    const query = `
+      INSERT INTO picture (photoUrl, publicId, name)
+      VALUES (?, ?, ?);
+    `;
+
+    const lastID = await new Promise<number>((resolve, reject) => {
+      db.run(query, [photoUrl, publicId, photoName], function (err) {
+        if (err) {
+          reject(err);
+        } else {
+          const insertedID = this.lastID;
+          resolve(insertedID);
+        }
+      });
+    });
+
+    return {
+      message: "Photo added to database successfully",
+      id: lastID,
+    };
+  } catch (error) {
+    console.error("Error adding photo to database:", error);
+    throw error;
+  }
 };

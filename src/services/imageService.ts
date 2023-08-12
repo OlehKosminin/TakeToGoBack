@@ -16,7 +16,7 @@ const storage = new CloudinaryStorage({
   cloudinary,
   params: (req) => {
     return {
-      folder: `products-img/${Date.now()}`,
+      folder: `products-img`,
       format: "webp",
       public_id: uuid(),
       transformation: [{ width: 400, height: 300, crop: "fill" }],
@@ -26,6 +26,6 @@ const storage = new CloudinaryStorage({
   },
 });
 
-const uploadPhoto = multer({ storage });
+const multerUploads = multer({ storage }).single("image");
 
-export default uploadPhoto;
+export default multerUploads;

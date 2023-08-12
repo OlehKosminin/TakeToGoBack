@@ -4,11 +4,11 @@ const router = express.Router();
 
 import ctrl from "../controllers/products-controller";
 
-import uploadPhoto from "../services/imageService";
+import multerUploads from "../services/imageService";
 
 router.get("/", ctrl.getAllProducts);
 
-router.post("/", uploadPhoto.single("image"), ctrl.createProduct);
+router.post("/", multerUploads, ctrl.createProduct);
 
 router.get("/:id", ctrl.getProductById);
 
