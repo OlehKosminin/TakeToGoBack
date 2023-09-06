@@ -1,25 +1,8 @@
 
 create table
-
-CREATE TABLE IF NOT EXISTS products (
-    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    title VARCHAR(50) NOT NULL,
-    description TEXT NOT NULL,
-    price VARCHAR(8) NOT NULL,
-    currency VARCHAR(3) NOT NULL,
-    category VARCHAR(15) NOT NULL,
-    bought INTEGER DEFAULT 0,
-    photoUrl CHAR(87),
-    publicId CHAR(73),
-    alt CHAR(10),
-    discount VARCHAR(5),
-    weight VARCHAR(5) NOT NULL,
-    ingredients TEXT NOT NULL
-);
-
 ??
 
-CREATE TABLE IF NOT EXISTS productsUpd (
+CREATE TABLE IF NOT EXISTS products (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     title VARCHAR(50) NOT NULL,
     description TEXT NOT NULL,
@@ -31,7 +14,7 @@ CREATE TABLE IF NOT EXISTS productsUpd (
     weight VARCHAR(5) NOT NULL,
     ingredients TEXT NOT NULL
     photo INTEGER, 
-  FOREIGN KEY (photo) REFERENCES picture (id)
+  FOREIGN KEY (photo) REFERENCES picture (id) ON DELETE CASCADE
 );
 
 ??
@@ -70,14 +53,4 @@ CREATE TABLE IF NOT EXISTS users (
   photoUrl TEXT NOT NULL,
   publicId TEXT NOT NULL,
   name TEXT NOT NULL
-);
-
-many to many 
-
-CREATE TABLE product_picture (
-  product_id INTEGER,
-  picture_id INTEGER,
-  PRIMARY KEY (product_id, picture_id),
-  FOREIGN KEY (product_id) REFERENCES products (id),
-  FOREIGN KEY (picture_id) REFERENCES picture (id)
 );

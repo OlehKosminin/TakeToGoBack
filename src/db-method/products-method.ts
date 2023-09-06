@@ -141,15 +141,34 @@ export const deleteById = async (query: string, productId: string) => {
   });
 };
 
-export const checkIfIdExists = async (id: string): Promise<boolean> => {
-  const query = `SELECT COUNT(*) as count FROM products WHERE id = ?;`;
+// export const checkIfIdExists = async (id: string): Promise<boolean> => {
+//   const query = `SELECT COUNT(*) as count FROM products WHERE id = ?;`;
 
-  return new Promise<boolean>((resolve, reject) => {
+//   return new Promise<boolean>((resolve, reject) => {
+//     db.get(query, [id], (err, row: any) => {
+//       if (err) {
+//         reject(err);
+//       } else {
+//         resolve(row.count > 0);
+//       }
+//     });
+//   });
+// };
+
+export const checkIfIdExists = async (
+  id: string
+): Promise<{ count: number } | null> => {
+  // const query = `SELECT COUNT(*) as count FROM products WHERE id = ?;`;
+
+  const query = `SELECT * FROM products
+                  WHERE id = ?;`;
+
+  return new Promise<{ count: number } | null>((resolve, reject) => {
     db.get(query, [id], (err, row: any) => {
       if (err) {
         reject(err);
       } else {
-        resolve(row.count > 0);
+        resolve(row ? row : null);
       }
     });
   });
@@ -185,4 +204,17 @@ export const addPhotoDB = async (
     console.error("Error adding photo to database:", error);
     throw error;
   }
+};
+
+export const getProductsWithPhoto = async (query: string): Promise<any[]> => {
+  return new Promise<any[]>((resolve, reject) => {
+    db.all(query, (err, rows) => {
+      if (err) {
+        reject(err);
+      } else {
+        console.log("rows: ", rows);
+        resolve(rows);
+      }
+    });
+  });
 };
